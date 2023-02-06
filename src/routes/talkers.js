@@ -10,6 +10,17 @@ async function readFile() {
   }
 }
 
+async function readFileById(id) {
+  try {
+    const data = await readFile();
+    const findById = data.find((dta) => dta.id === Number(id));
+    return findById;
+  } catch (err) {
+    console.error(`Erro ao ler o arquivo: ${err.message}`);
+  }
+}
+
 module.exports = {
   readFile,
+  readFileById,
 };
