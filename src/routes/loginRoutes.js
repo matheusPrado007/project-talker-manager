@@ -1,12 +1,18 @@
 const express = require('express');
 const crypto = require('crypto');
+const {
+  validateEmail, validateRegexEmail,
+  validatePassword, validatePasswordLength,
+} = require('../middlewares/validateLogin');
 
 const loginRouter = express.Router();
 
 const OK = 200;
 const INTERNAL_SERVER_ERROR = 500;
 
-loginRouter.post('/', async (req, res) => {
+loginRouter.post('/', validateEmail, validateRegexEmail, validatePassword,
+validatePasswordLength,
+async (_req, res) => {
   const token = crypto.randomBytes(8).toString('hex');
   const randomToken = {
     token,

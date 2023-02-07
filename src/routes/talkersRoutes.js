@@ -4,6 +4,7 @@ const { readFile, readFileById } = require('./talkers');
 const talkerRouter = express.Router();
 const OK = 200;
 const NOT_FOUND = 404;
+const INTERNAL_SERVER_ERROR = 500;
 
 talkerRouter.get('/', async (_req, res) => {
   const talkers = await readFile();
@@ -13,7 +14,7 @@ talkerRouter.get('/', async (_req, res) => {
     }
     return res.status(OK).json(talkers);
   } catch (err) {
-    return res.status(500).json({ message: err.sqlMessage });
+    return res.status(INTERNAL_SERVER_ERROR).json({ message: err.sqlMessage });
   }
 });
 
@@ -29,7 +30,7 @@ talkerRouter.get('/:id', async (req, res) => {
       .json({ message: 'Pessoa palestrante não encontrada' });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: err.sqlMessage });
+    res.status(INTERNAL_SERVER_ERROR).json({ message: err.sqlMessage });
   }
 });
 
