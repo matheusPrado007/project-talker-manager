@@ -1,10 +1,22 @@
 const express = require('express');
-const { readFile, readFileById } = require('./talkers');
+const {
+  validateName,
+  validateToken,
+  validateAge,
+  validateOfLegalAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+  validateRateLength,
+} = require('../middlewares/validateTalkers');
+const { readFile, readFileById, writeFileTalker } = require('./talkers');
 
 const talkerRouter = express.Router();
 const OK = 200;
 const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
+const UNAUTHORIZED = 401;
+const CREATED = 201;
 
 talkerRouter.get('/', async (_req, res) => {
   const talkers = await readFile();
@@ -33,5 +45,30 @@ talkerRouter.get('/:id', async (req, res) => {
     res.status(INTERNAL_SERVER_ERROR).json({ message: err.sqlMessage });
   }
 });
+
+talkerRouter.post(
+  '/',
+  validateName,
+  validateToken,
+  validateAge,
+  validateOfLegalAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+  validateRateLength,
+  async (req, res) => {
+    try {
+      const data = await readFile();
+      const newData = {
+        id: data.length + 1,
+        ...req.body,
+      };
+      await writeFileTalker(newData);
+      return res.status(CREATED).json(newData);
+    } catch (err) {
+      return res.status(UNAUTHORIZED).json({ message: err.message });
+    }
+  },
+);
 
 module.exports = talkerRouter;
