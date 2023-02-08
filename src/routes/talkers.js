@@ -51,9 +51,23 @@ async function updatedFile(id, updatedData) {
   }
 }
 
+async function deleteFile(id) {
+  const data = await readFile();
+  const newData = data.filter((curr) => curr.id !== id);
+
+  const newUpdatedData = JSON.stringify(newData);
+  try {
+    await fs.writeFile(join(__dirname, PATH_DATA), newUpdatedData);
+    console.log(`Deletou o id: ${id}`);
+  } catch (error) {
+    console.log(`Erro na escrita do arquivo: ${error.message}`);
+  }
+}
+
 module.exports = {
   readFile,
   readFileById,
   writeFileTalker,
   updatedFile,
+  deleteFile,
 };

@@ -15,6 +15,7 @@ const {
   readFileById,
   writeFileTalker,
   updatedFile,
+  deleteFile,
 } = require('./talkers');
 
 const talkerRouter = express.Router();
@@ -23,6 +24,7 @@ const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 const UNAUTHORIZED = 401;
 const CREATED = 201;
+const DELETED = 204;
 
 talkerRouter.get('/', async (_req, res) => {
   const talkers = await readFile();
@@ -98,5 +100,16 @@ talkerRouter.put(
     }
   },
 );
+
+talkerRouter.delete('/:id', validateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await deleteFile(Number(id));
+
+    return res.status(DELETED).end();
+  } catch (err) {
+    res.status(INTERNAL_SERVER_ERROR).json({ message: err.sqlMessage });
+  }
+});
 
 module.exports = talkerRouter;
