@@ -6,6 +6,7 @@ const {
 } = require('../middlewares/validateLogin');
 
 const loginRouter = express.Router();
+loginRouter.use(express.json());
 
 const OK = 200;
 const INTERNAL_SERVER_ERROR = 500;

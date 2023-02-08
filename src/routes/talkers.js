@@ -33,8 +33,27 @@ async function writeFileTalker(newData) {
   }
 }
 
+async function updatedFile(id, updatedData) {
+  const data = await readFile();
+  const updated = { id, ...updatedData };
+  const newData = data.reduce((dataList, currentData) => {
+    if (currentData.id === updated.id) return [...dataList, updated];
+    return [...dataList, currentData];
+  }, []);
+
+  const newUpdatedData = JSON.stringify(newData);
+  try {
+    await fs.writeFile(join(__dirname, PATH_DATA), newUpdatedData);
+    console.log(`Atualizou o id: ${id}`);
+    return updated;
+  } catch (error) {
+    console.log(`Erro na escrita do arquivo: ${error.message}`);
+  }
+}
+
 module.exports = {
   readFile,
   readFileById,
   writeFileTalker,
+  updatedFile,
 };

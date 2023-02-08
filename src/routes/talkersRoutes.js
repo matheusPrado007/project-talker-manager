@@ -1,4 +1,5 @@
 const express = require('express');
+
 const {
   validateName,
   validateToken,
@@ -9,7 +10,12 @@ const {
   validateRate,
   validateRateLength,
 } = require('../middlewares/validateTalkers');
-const { readFile, readFileById, writeFileTalker } = require('./talkers');
+const {
+  readFile,
+  readFileById,
+  writeFileTalker,
+  updatedFile,
+} = require('./talkers');
 
 const talkerRouter = express.Router();
 const OK = 200;
@@ -67,6 +73,28 @@ talkerRouter.post(
       return res.status(CREATED).json(newData);
     } catch (err) {
       return res.status(UNAUTHORIZED).json({ message: err.message });
+    }
+  },
+);
+
+talkerRouter.put(
+  '/:id',
+  validateName,
+  validateToken,
+  validateAge,
+  validateOfLegalAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+  validateRateLength,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateFile = req.body;
+      const updateData = await updatedFile(Number(id), updateFile);
+      return res.status(OK).json(updateData);
+    } catch (err) {
+      res.status(INTERNAL_SERVER_ERROR).json({ message: err.sqlMessage });
     }
   },
 );
