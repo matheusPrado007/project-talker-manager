@@ -38,6 +38,21 @@ talkerRouter.get('/', async (_req, res) => {
   }
 });
 
+talkerRouter.get('/search', validateToken, async (req, res) => {
+  try {
+    const { q } = req.query;
+    const data = await readFile();
+
+    if (!q || q.length === 0) {
+      return res.status(200).json(data);
+    }
+    const filteredData = data.filter((element) => element.name.includes(q));
+    return res.status(OK).json(filteredData);
+  } catch (err) {
+    res.status(INTERNAL_SERVER_ERROR).send({ message: err.message });
+  }
+});
+
 talkerRouter.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
