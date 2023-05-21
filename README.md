@@ -6,4 +6,12 @@ Nesse projeto desenvolvi uma API CRUD (Create, Read, Update e Delete) e alguns e
 - docker
 - Node.js
 - Express 
+
+
+## Banco de dados
 - MySQL
+
+## Habilidades
+- Dockerização
+- CRUD 
+- Construção de APIs REST.
