@@ -14,7 +14,6 @@
   <p>Certifique-se de ter as seguintes ferramentas instaladas em sua máquina:</p>
   <ul>
     <li>Node.js (<a href="https://nodejs.org">https://nodejs.org</a>)</li>
-    <li>MySQL (<a href="https://www.mysql.com/">https://www.mysql.com/</a>)</li>
   </ul>
 
   <h2>Instalação</h2>
